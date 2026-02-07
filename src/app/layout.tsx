@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 
 import ThemeToggle from "@/components/ui/ThemeToggle";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -38,6 +39,7 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         <ThemeToggle />
+        <SpeedInsights />
         {children}
       </body>
     </html>
