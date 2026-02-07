@@ -3,14 +3,16 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Scene from "@/components/three/Scene";
-import FloatingLogo from "@/components/three/FloatingLogo";
+import AssistantCharacter from "@/components/ui/AssistantCharacter";
 
 export default function Hero() {
     return (
         <div className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden transition-colors duration-500">
-            <Scene>
-                <FloatingLogo />
-            </Scene>
+            <Scene />
+
+            <AssistantCharacter
+                message="Hello ! Tu es là pour la communication ? Clique sur le bouton pour commencer."
+            />
 
             <div className="relative z-10 text-center px-4">
                 <motion.div
@@ -46,13 +48,13 @@ export default function Hero() {
                     <Link href="/request">
                         <button className="group relative px-8 py-4 bg-foreground text-background font-bold uppercase tracking-widest overflow-hidden transition-all duration-300 hover:pr-12">
                             <span className="relative z-10">Nouvelle Demande</span>
-                            <div className="absolute top-0 right-0 h-full w-0 bg-brand-gray-500/20 transition-all duration-300 group-hover:w-full" />
+                            <div className="absolute top-0 right-0 h-full w-0 bg-brand-violet/20 transition-all duration-300 group-hover:w-full" />
                             <span className="absolute right-4 top-1/2 -translate-y-1/2 opacity-0 transition-all duration-300 group-hover:opacity-100">→</span>
                         </button>
                     </Link>
 
-                    <Link href="/dashboard">
-                        <button className="px-8 py-4 border border-foreground/20 text-foreground font-bold uppercase tracking-widest backdrop-blur-sm transition-all duration-300 hover:bg-foreground/10">
+                    <Link href="/dashboard" className="w-full sm:w-auto">
+                        <button className="w-full px-8 py-4 border border-brand-violet/20 text-foreground font-bold uppercase tracking-widest backdrop-blur-sm transition-all duration-300 hover:bg-brand-violet/10 hover:border-brand-violet/40">
                             Tableau de Bord
                         </button>
                     </Link>
@@ -65,7 +67,7 @@ export default function Hero() {
                 transition={{ delay: 1, duration: 1 }}
                 className="absolute bottom-12 left-1/2 -translate-x-1/2 text-brand-gray-600 text-[10px] tracking-[0.3em] uppercase"
             >
-                Scrollez pour explorer
+                Expérience Immersive
             </motion.div>
         </div>
     );

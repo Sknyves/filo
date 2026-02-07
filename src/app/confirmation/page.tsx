@@ -4,11 +4,14 @@ import { motion } from "framer-motion";
 import { CheckCircle2, ArrowRight, Home } from "lucide-react";
 import Link from "next/link";
 import Scene from "@/components/three/Scene";
+import AssistantCharacter from "@/components/ui/AssistantCharacter";
 
 export default function ConfirmationPage() {
     return (
         <div className="min-h-screen w-full flex items-center justify-center bg-background p-4 relative overflow-hidden transition-colors duration-500">
             <Scene showParticles={true} />
+
+            <AssistantCharacter message="Bravo ! Ta demande a été envoyée avec succès. Je m'en occupe tout de suite !" />
 
             <div className="max-w-md w-full glass p-12 rounded-[32px] text-center relative z-10">
                 <motion.div

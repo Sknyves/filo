@@ -25,7 +25,7 @@ export default function LoginPage() {
                 .from('admin_settings')
                 .select('*')
                 .eq('email', identifier)
-                .single();
+                .maybeSingle();
 
             if (dbError || !admin) {
                 setError("Utilisateur non autorisé.");
@@ -60,7 +60,7 @@ export default function LoginPage() {
                 animate={{ opacity: 1, y: 0 }}
                 className="w-full max-w-md relative z-10"
             >
-                <div className="glass p-12 rounded-[32px] shadow-2xl">
+                <div className="glass p-6 md:p-12 rounded-[32px] shadow-2xl">
                     <div className="text-center mb-10">
                         <div className="w-16 h-16 bg-foreground rounded-2xl flex items-center justify-center mx-auto mb-6 transform rotate-12">
                             <ShieldCheck size={32} className="text-background" />
@@ -79,7 +79,7 @@ export default function LoginPage() {
                                     value={identifier}
                                     onChange={(e) => setIdentifier(e.target.value)}
                                     placeholder="UTILISATEUR"
-                                    className="w-full bg-stat-card border border-[var(--glass-border)] p-4 pl-12 text-foreground outline-none focus:border-foreground transition-all"
+                                    className="w-full bg-stat-card border border-[var(--glass-border)] p-4 pl-12 text-foreground outline-none focus:border-brand-violet transition-all"
                                     required
                                 />
                             </div>
@@ -94,7 +94,7 @@ export default function LoginPage() {
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     placeholder="••••••••"
-                                    className="w-full bg-stat-card border border-[var(--glass-border)] p-4 pl-12 text-foreground outline-none focus:border-foreground transition-all"
+                                    className="w-full bg-stat-card border border-[var(--glass-border)] p-4 pl-12 text-foreground outline-none focus:border-brand-violet transition-all"
                                     required
                                 />
                             </div>
@@ -114,7 +114,7 @@ export default function LoginPage() {
                         <button
                             type="submit"
                             disabled={isLoading}
-                            className="w-full bg-foreground text-background py-5 font-black uppercase tracking-[0.2em] text-[10px] hover:bg-brand-gray-500/20 transition-all transform active:scale-[0.98] disabled:opacity-50"
+                            className="w-full bg-brand-violet text-white py-5 font-black uppercase tracking-[0.2em] text-[10px] hover:bg-brand-violet-dark transition-all transform active:scale-[0.98] disabled:opacity-50"
                         >
                             {isLoading ? "VÉRIFICATION..." : "SE CONNECTER"}
                         </button>

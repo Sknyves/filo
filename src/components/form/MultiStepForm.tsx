@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { User, Building2, Briefcase, Calendar, ChevronRight, ChevronLeft, Send, Clock } from "lucide-react";
 import Scene from "@/components/three/Scene";
+import AssistantCharacter from "@/components/ui/AssistantCharacter";
 import { useRouter } from "next/navigation";
 
 interface FormField {
@@ -115,6 +116,16 @@ export default function MultiStepForm() {
         <div className="min-h-screen w-full flex items-center justify-center p-4 relative overflow-hidden transition-colors duration-500">
             <Scene showParticles={false} />
 
+            <AssistantCharacter
+                message={
+                    isSubmitting
+                        ? "Excellent travail ! J'envoie ta demande tout de suite."
+                        : currentStep === 0
+                            ? "C'est un bon début ! Continuons avec tes informations."
+                            : "Presque fini, encore un petit effort pour les détails !"
+                }
+            />
+
             <div className="w-full max-w-2xl relative z-10">
                 <div className="mb-12 text-center">
                     <motion.div
@@ -127,7 +138,7 @@ export default function MultiStepForm() {
                     <h2 className="text-4xl font-black text-foreground tracking-tight">{steps[currentStep].title}</h2>
                 </div>
 
-                <div className="perspective-1000 relative h-[450px]">
+                <div className="perspective-1000 relative min-h-[450px]">
                     <AnimatePresence mode="wait" custom={direction}>
                         <motion.div
                             key={currentStep}
@@ -136,7 +147,7 @@ export default function MultiStepForm() {
                             initial="enter"
                             animate="center"
                             exit="exit"
-                            className="absolute inset-0 w-full h-full glass p-8 md:p-12 rounded-3xl"
+                            className="relative inset-0 w-full h-full glass p-6 md:p-12 rounded-3xl"
                         >
                             <div className="space-y-8">
                                 {steps[currentStep].fields.map((field: any) => (
@@ -148,7 +159,7 @@ export default function MultiStepForm() {
 
                                         {field.type === "select" ? (
                                             <select
-                                                className="w-full bg-stat-card border border-[var(--glass-border)] p-4 text-foreground outline-none focus:border-foreground transition-colors appearance-none"
+                                                className="w-full bg-stat-card border border-[var(--glass-border)] p-4 text-foreground outline-none focus:border-brand-violet transition-colors appearance-none"
                                                 onChange={(e) => setFormData({ ...formData, [field.name]: e.target.value })}
                                                 value={formData[field.name] || ""}
                                             >
@@ -163,8 +174,8 @@ export default function MultiStepForm() {
                                                         type="button"
                                                         onClick={() => setFormData({ ...formData, [field.name]: opt.name })}
                                                         className={`p-6 border transition-all duration-300 text-left group ${formData[field.name] === opt.name
-                                                            ? "bg-foreground border-foreground text-background"
-                                                            : "bg-foreground/5 border-[var(--glass-border)] text-foreground hover:border-foreground/40"
+                                                            ? "bg-brand-violet border-brand-violet text-white"
+                                                            : "bg-foreground/5 border-[var(--glass-border)] text-foreground hover:border-brand-violet/40"
                                                             }`}
                                                     >
                                                         <opt.icon size={24} className="mb-4" />
@@ -176,7 +187,7 @@ export default function MultiStepForm() {
                                         ) : field.type === "textarea" ? (
                                             <textarea
                                                 placeholder={field.placeholder}
-                                                className="w-full bg-stat-card border border-[var(--glass-border)] p-4 text-foreground outline-none focus:border-foreground transition-colors h-32 resize-none"
+                                                className="w-full bg-stat-card border border-[var(--glass-border)] p-4 text-foreground outline-none focus:border-brand-violet transition-colors h-32 resize-none"
                                                 onChange={(e) => setFormData({ ...formData, [field.name]: e.target.value })}
                                                 value={formData[field.name] || ""}
                                             />
@@ -184,7 +195,7 @@ export default function MultiStepForm() {
                                             <input
                                                 type={field.type || "text"}
                                                 placeholder={field.placeholder}
-                                                className="w-full bg-stat-card border border-[var(--glass-border)] p-4 text-foreground outline-none focus:border-foreground transition-colors"
+                                                className="w-full bg-stat-card border border-[var(--glass-border)] p-4 text-foreground outline-none focus:border-brand-violet transition-colors"
                                                 onChange={(e) => setFormData({ ...formData, [field.name]: e.target.value })}
                                                 value={formData[field.name] || ""}
                                             />

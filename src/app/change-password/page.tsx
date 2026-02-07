@@ -32,7 +32,7 @@ export default function ChangePasswordPage() {
                     password_hash: password,
                     has_changed_password: true
                 })
-                .eq('id', 1);
+                .eq('id', 1); // No .single() needed for update usually, but let's check.
 
             if (dbError) throw dbError;
 
@@ -75,7 +75,7 @@ export default function ChangePasswordPage() {
                                         type="password"
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
-                                        className="w-full bg-stat-card border border-[var(--glass-border)] p-4 pl-12 text-foreground outline-none focus:border-foreground transition-all"
+                                        className="w-full bg-stat-card border border-[var(--glass-border)] p-4 pl-12 text-foreground outline-none focus:border-brand-violet transition-all"
                                         required
                                     />
                                 </div>
@@ -89,7 +89,7 @@ export default function ChangePasswordPage() {
                                         type="password"
                                         value={confirmPassword}
                                         onChange={(e) => setConfirmPassword(e.target.value)}
-                                        className="w-full bg-stat-card border border-[var(--glass-border)] p-4 pl-12 text-foreground outline-none focus:border-foreground transition-all"
+                                        className="w-full bg-stat-card border border-[var(--glass-border)] p-4 pl-12 text-foreground outline-none focus:border-brand-violet transition-all"
                                         required
                                     />
                                 </div>
@@ -105,7 +105,7 @@ export default function ChangePasswordPage() {
                             <button
                                 type="submit"
                                 disabled={isLoading}
-                                className="w-full bg-foreground text-background py-5 font-black uppercase tracking-[0.2em] text-[10px] hover:bg-brand-gray-500/20 transition-all transform active:scale-[0.98] disabled:opacity-50"
+                                className="w-full bg-brand-violet text-white py-5 font-black uppercase tracking-[0.2em] text-[10px] hover:bg-brand-violet-dark transition-all transform active:scale-[0.98] disabled:opacity-50"
                             >
                                 {isLoading ? "MISE À JOUR..." : "CONFIRMER"}
                             </button>
