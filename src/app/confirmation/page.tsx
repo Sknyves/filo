@@ -20,7 +20,7 @@ export default function ConfirmationPage() {
                     transition={{ type: "spring", stiffness: 260, damping: 20 }}
                     className="w-20 h-20 md:w-24 md:h-24 bg-foreground rounded-full flex items-center justify-center mx-auto mb-6 md:mb-8 shadow-2xl"
                 >
-                    <CheckCircle2 size={40} md:size={48} className="text-background" />
+                    <CheckCircle2 className="text-background w-10 h-10 md:w-12 md:h-12" />
                 </motion.div>
 
                 <motion.h1
