@@ -13,21 +13,21 @@ export default function ConfirmationPage() {
 
             <AssistantCharacter message="Bravo ! Ta demande a été envoyée avec succès. Je m'en occupe tout de suite !" />
 
-            <div className="max-w-md w-full glass p-12 rounded-[32px] text-center relative z-10">
+            <div className="max-w-md w-full glass p-8 md:p-12 rounded-[32px] text-center relative z-10 mb-20 md:mb-0">
                 <motion.div
                     initial={{ scale: 0, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ type: "spring", stiffness: 260, damping: 20 }}
-                    className="w-24 h-24 bg-foreground rounded-full flex items-center justify-center mx-auto mb-8 shadow-2xl"
+                    className="w-20 h-20 md:w-24 md:h-24 bg-foreground rounded-full flex items-center justify-center mx-auto mb-6 md:mb-8 shadow-2xl"
                 >
-                    <CheckCircle2 size={48} className="text-background" />
+                    <CheckCircle2 size={40} md:size={48} className="text-background" />
                 </motion.div>
 
                 <motion.h1
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3 }}
-                    className="text-4xl font-black text-foreground tracking-tighter mb-4"
+                    className="text-3xl md:text-4xl font-black text-foreground tracking-tighter mb-4"
                 >
                     DEMANDE TRANSMISE
                 </motion.h1>
@@ -36,7 +36,7 @@ export default function ConfirmationPage() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4 }}
-                    className="text-brand-gray-400 text-sm leading-relaxed mb-12"
+                    className="text-brand-gray-400 text-xs md:text-sm leading-relaxed mb-8 md:mb-12"
                 >
                     Votre demande est en cours de traitement par le service communication.
                     Vous recevrez un email de confirmation d&apos;ici quelques instants.

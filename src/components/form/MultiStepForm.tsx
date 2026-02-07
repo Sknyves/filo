@@ -207,11 +207,11 @@ export default function MultiStepForm() {
                     </AnimatePresence>
                 </div>
 
-                <div className="mt-12 flex items-center justify-between">
+                <div className="mt-8 md:mt-12 flex flex-col sm:flex-row items-center justify-between gap-4 pb-20 md:pb-0">
                     <button
                         onClick={handlePrev}
                         disabled={currentStep === 0}
-                        className={`flex items-center gap-2 text-xs uppercase tracking-widest font-bold transition-opacity ${currentStep === 0 ? "opacity-0" : "opacity-100 hover:text-foreground"}`}
+                        className={`w-full sm:w-auto flex items-center justify-center gap-2 text-xs uppercase tracking-widest font-bold transition-opacity ${currentStep === 0 ? "opacity-0" : "opacity-100 hover:text-foreground"}`}
                     >
                         <ChevronLeft size={16} /> Précédent
                     </button>
