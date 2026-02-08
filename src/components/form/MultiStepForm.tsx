@@ -27,7 +27,7 @@ const steps: FormStep[] = [
         fields: [
             { name: "demandeur", label: "Nom et prénom", placeholder: "Ex: Jean Dupont", icon: User },
             { name: "email", label: "Adresse Email", type: "email", placeholder: "jean.dupont@exemple.com", icon: Send },
-            { name: "service", label: "Votre Service", type: "select", options: ["Marketing", "RH", "Direction", "Commercial", "Technique"], icon: Building2 },
+            { name: "service", label: "Votre Service", type: "select", options: ["Comptabilité", "Direction Executive", "Chargée de Programme", "Plaidoyer", "Direction Administrative et Financière"], icon: Building2 },
         ]
     },
     {

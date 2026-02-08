@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 
@@ -82,7 +82,7 @@ export default function AssistantCharacter({ message, visible = true }: Assistan
     }, [stage, message]);
 
     // Character container variants for the overall movement
-    const containerVariants = {
+    const containerVariants: Variants = {
         hidden: {
             x: 400,
             y: 400,
