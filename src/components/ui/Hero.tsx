@@ -53,9 +53,15 @@ export default function Hero() {
                         </button>
                     </Link>
 
-                    <Link href="/dashboard" className="w-full sm:w-auto">
+                    <Link href="/services" className="w-full sm:w-auto">
                         <button className="w-full px-8 py-4 border border-brand-violet/20 text-foreground font-bold uppercase tracking-widest backdrop-blur-sm transition-all duration-300 hover:bg-brand-violet/10 hover:border-brand-violet/40">
-                            Tableau de Bord
+                            Espaces Services
+                        </button>
+                    </Link>
+
+                    <Link href="/dashboard" className="w-full sm:w-auto">
+                        <button className="w-full px-8 py-4 bg-stat-card/50 border border-[var(--glass-border)] text-brand-gray-500 font-bold uppercase tracking-widest backdrop-blur-sm transition-all duration-300 hover:text-foreground hover:border-brand-violet/20">
+                            Admin
                         </button>
                     </Link>
                 </motion.div>
