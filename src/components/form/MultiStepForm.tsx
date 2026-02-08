@@ -2,10 +2,11 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import { User, Building2, Briefcase, Calendar, ChevronRight, ChevronLeft, Send, Clock } from "lucide-react";
+import { User, Building2, Briefcase, Calendar, ChevronRight, ChevronLeft, Send, Clock, Home } from "lucide-react";
 import Scene from "@/components/three/Scene";
 import AssistantCharacter from "@/components/ui/AssistantCharacter";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface FormField {
     name: string;
@@ -115,6 +116,13 @@ export default function MultiStepForm() {
     return (
         <div className="min-h-screen w-full flex items-center justify-center p-4 relative overflow-hidden transition-colors duration-500">
             <Scene showParticles={false} />
+
+            <Link
+                href="/"
+                className="absolute top-8 left-8 z-20 flex items-center gap-2 text-xs uppercase tracking-widest font-bold text-brand-gray-500 hover:text-foreground transition-colors glass px-4 py-2 rounded-full"
+            >
+                <Home size={14} /> Accueil
+            </Link>
 
             <AssistantCharacter
                 message={
