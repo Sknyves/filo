@@ -5,8 +5,8 @@ import { AUTH_COOKIE_NAME } from './lib/auth';
 export function middleware(request: NextRequest) {
     const path = request.nextUrl.pathname;
 
-    // Protect /dashboard and its subroutes
-    if (path.startsWith('/dashboard')) {
+    // Protect /dashboard, /services, and /service and their subroutes
+    if (path.startsWith('/dashboard') || path.startsWith('/services') || path.startsWith('/service')) {
         const authToken = request.cookies.get(AUTH_COOKIE_NAME);
 
         if (!authToken) {
@@ -26,5 +26,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ['/dashboard/:path*', '/login'],
+    matcher: ['/dashboard/:path*', '/services/:path*', '/service/:path*', '/login'],
 };
