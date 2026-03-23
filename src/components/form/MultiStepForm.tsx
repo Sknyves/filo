@@ -7,6 +7,7 @@ import Scene from "@/components/three/Scene";
 import AssistantCharacter from "@/components/ui/AssistantCharacter";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { supabase } from "@/lib/supabase";
 
 interface FormField {
     name: string;
