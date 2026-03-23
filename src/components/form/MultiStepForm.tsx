@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import { User, Building2, Briefcase, Calendar, ChevronRight, ChevronLeft, Send, Clock, Home } from "lucide-react";
+import { User, Building2, Briefcase, Calendar, ChevronRight, ChevronLeft, Send, Clock, Home, Paperclip, FileUp, X as CloseIcon } from "lucide-react";
 import Scene from "@/components/three/Scene";
 import AssistantCharacter from "@/components/ui/AssistantCharacter";
 import { useRouter } from "next/navigation";
@@ -46,6 +46,7 @@ const steps: FormStep[] = [
                 ]
             },
             { name: "description", label: "Description du besoin", type: "textarea", placeholder: "Décrivez votre projet en quelques mots...", icon: Briefcase },
+            { name: "files", label: "Documents joints (facultatif)", type: "file", placeholder: "Ajouter des fichiers...", icon: Paperclip },
         ]
     }
 ];
@@ -56,6 +57,31 @@ export default function MultiStepForm() {
     const [direction, setDirection] = useState(0);
 
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+
+    const uploadFiles = async () => {
+        if (selectedFiles.length === 0) return [];
+
+        const uploadPromises = selectedFiles.map(async (file) => {
+            const fileExt = file.name.split('.').pop();
+            const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
+            const filePath = `requests/${fileName}`;
+
+            const { data, error } = await supabase.storage
+                .from('requests')
+                .upload(filePath, file);
+
+            if (error) throw error;
+
+            const { data: { publicUrl } } = supabase.storage
+                .from('requests')
+                .getPublicUrl(filePath);
+
+            return publicUrl;
+        });
+
+        return Promise.all(uploadPromises);
+    };
 
     const handleNext = async () => {
         if (currentStep < steps.length - 1) {
@@ -64,16 +90,25 @@ export default function MultiStepForm() {
         } else {
             setIsSubmitting(true);
             try {
+                // First upload files
+                const fileUrls = await uploadFiles();
+
+                const payload = {
+                    ...formData,
+                    file_urls: fileUrls
+                };
+
                 const response = await fetch("/api/requests", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(formData),
+                    body: JSON.stringify(payload),
                 });
                 if (response.ok) {
                     window.location.href = "/confirmation";
                 }
             } catch (error) {
                 console.error("Submission failed", error);
+                alert("Une erreur est survenue lors de l'envoi. Vérifiez que le stockage Supabase est configuré.");
             } finally {
                 setIsSubmitting(false);
             }
@@ -199,6 +234,58 @@ export default function MultiStepForm() {
                                                 onChange={(e) => setFormData({ ...formData, [field.name]: e.target.value })}
                                                 value={formData[field.name] || ""}
                                             />
+                                        ) : field.type === "file" ? (
+                                            <div className="space-y-4">
+                                                <div className="relative">
+                                                    <input
+                                                        type="file"
+                                                        multiple
+                                                        className="hidden"
+                                                        id="file-upload"
+                                                        onChange={(e) => {
+                                                            if (e.target.files) {
+                                                                const files = Array.from(e.target.files);
+                                                                setSelectedFiles(prev => [...prev, ...files]);
+                                                            }
+                                                        }}
+                                                    />
+                                                    <label
+                                                        htmlFor="file-upload"
+                                                        className="flex flex-col items-center justify-center w-full h-32 bg-foreground/5 border-2 border-dashed border-[var(--glass-border)] rounded-2xl cursor-pointer hover:border-brand-violet hover:bg-brand-violet/5 transition-all group"
+                                                    >
+                                                        <FileUp size={24} className="text-brand-gray-500 group-hover:text-brand-violet mb-2" />
+                                                        <span className="text-[10px] uppercase tracking-widest font-bold text-brand-gray-500 group-hover:text-foreground">
+                                                            {field.placeholder}
+                                                        </span>
+                                                        <span className="text-[9px] text-brand-gray-600 mt-1 uppercase">Max 10MB par fichier</span>
+                                                    </label>
+                                                </div>
+
+                                                {selectedFiles.length > 0 && (
+                                                    <div className="grid grid-cols-1 gap-2">
+                                                        {selectedFiles.map((file, idx) => (
+                                                            <div key={idx} className="flex items-center justify-between p-3 bg-stat-card border border-[var(--glass-border)] rounded-xl group/file">
+                                                                <div className="flex items-center gap-3 overflow-hidden">
+                                                                    <Paperclip size={14} className="text-brand-violet shrink-0" />
+                                                                    <span className="text-[10px] truncate font-bold uppercase tracking-tighter text-brand-gray-300">
+                                                                        {file.name}
+                                                                    </span>
+                                                                    <span className="text-[9px] text-brand-gray-600 shrink-0 uppercase">
+                                                                        {(file.size / 1024 / 1024).toFixed(2)} MB
+                                                                    </span>
+                                                                </div>
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => setSelectedFiles(prev => prev.filter((_, i) => i !== idx))}
+                                                                    className="p-1 text-brand-gray-500 hover:text-red-500 transition-colors"
+                                                                >
+                                                                    <CloseIcon size={14} />
+                                                                </button>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                )}
+                                            </div>
                                         ) : (
                                             <input
                                                 type={field.type || "text"}

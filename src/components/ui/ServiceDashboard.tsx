@@ -15,7 +15,8 @@ import {
     X,
     Trash2,
     Eye,
-    ChevronLeft
+    ChevronLeft,
+    Paperclip
 } from "lucide-react";
 import Scene from "@/components/three/Scene";
 import { useRouter } from "next/navigation";
@@ -203,6 +204,28 @@ export default function ServiceDashboard({ serviceName }: ServiceDashboardProps)
                                     "{selectedRequest.description}"
                                 </div>
                             </div>
+
+                            {selectedRequest.file_urls && selectedRequest.file_urls.length > 0 && (
+                                <div className="space-y-4 mb-10">
+                                    <h4 className="text-[10px] uppercase font-bold text-brand-gray-600 tracking-widest">Documents joints</h4>
+                                    <div className="grid grid-cols-1 gap-2">
+                                        {selectedRequest.file_urls.map((url: string, idx: number) => (
+                                            <a
+                                                key={idx}
+                                                href={url}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="flex items-center gap-3 p-4 bg-stat-card border border-brand-violet/10 rounded-2xl hover:border-brand-violet/30 transition-all group"
+                                            >
+                                                <Paperclip size={14} className="text-brand-violet" />
+                                                <span className="text-xs font-bold uppercase tracking-widest text-brand-gray-300 group-hover:text-white transition-colors">
+                                                    Document joint #{idx + 1}
+                                                </span>
+                                            </a>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
 
                             <button
                                 onClick={() => setSelectedRequest(null)}

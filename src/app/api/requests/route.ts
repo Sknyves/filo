@@ -16,6 +16,7 @@ export async function POST(req: Request) {
                     service: data.service,
                     type: data.type,
                     description: data.description,
+                    file_urls: data.file_urls,
                     status: 'A faire'
                 }
             ]);
@@ -54,7 +55,21 @@ export async function POST(req: Request) {
                     <p><strong>Service:</strong> ${data.service}</p>
                     <p><strong>Type:</strong> ${data.type}</p>
                     <p><strong>Description:</strong></p>
-                    <div style="background: #f9f9f9; padding: 15px; border-radius: 5px;">${data.description}</div>
+                    <div style="background: #f9f9f9; padding: 15px; border-radius: 5px; margin-bottom: 20px;">${data.description}</div>
+                    
+                    ${data.file_urls && data.file_urls.length > 0 ? `
+                        <p><strong>Documents joints:</strong></p>
+                        <ul style="list-style: none; padding: 0;">
+                            ${data.file_urls.map((url: string, i: number) => `
+                                <li style="margin-bottom: 8px;">
+                                    <a href="${url}" style="color: #6366f1; text-decoration: none; font-weight: bold; font-size: 14px;">
+                                        📎 Document joint #${i + 1}
+                                    </a>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    ` : ''}
+                    
                     <p style="font-size: 10px; color: #666; margin-top: 30px;">Envoyé via RequestFlow Platform</p>
                 </div>
             `,
