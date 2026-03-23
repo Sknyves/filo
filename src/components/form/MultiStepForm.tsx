@@ -46,7 +46,12 @@ const steps: FormStep[] = [
                 ]
             },
             { name: "description", label: "Description du besoin", type: "textarea", placeholder: "Décrivez votre projet en quelques mots...", icon: Briefcase },
-            { name: "files", label: "Documents joints (facultatif)", type: "file", placeholder: "Ajouter des fichiers...", icon: Paperclip },
+        ]
+    },
+    {
+        title: "Pièces jointes",
+        fields: [
+            { name: "files", label: "Documents (facultatif)", type: "file", placeholder: "Ajouter des fichiers...", icon: Paperclip },
         ]
     }
 ];
@@ -165,7 +170,9 @@ export default function MultiStepForm() {
                         ? "Excellent travail ! J'envoie ta demande tout de suite."
                         : currentStep === 0
                             ? "C'est un bon début ! Continuons avec tes informations."
-                            : "Presque fini, encore un petit effort pour les détails !"
+                            : currentStep === 1
+                                ? "Presque fini, encore un petit effort pour les détails !"
+                                : "Tu peux joindre des fichiers si tu le souhaites."
                 }
             />
 
@@ -181,7 +188,7 @@ export default function MultiStepForm() {
                     <h2 className="text-4xl font-black text-foreground tracking-tight">{steps[currentStep].title}</h2>
                 </div>
 
-                <div className="perspective-1000 relative min-h-[450px]">
+                <div className="perspective-1000 relative">
                     <AnimatePresence mode="wait" custom={direction}>
                         <motion.div
                             key={currentStep}
@@ -190,7 +197,7 @@ export default function MultiStepForm() {
                             initial="enter"
                             animate="center"
                             exit="exit"
-                            className="relative inset-0 w-full h-full glass p-6 md:p-12 rounded-3xl"
+                            className="relative w-full glass p-6 md:p-12 rounded-3xl"
                         >
                             <div className="space-y-8">
                                 {steps[currentStep].fields.map((field: any) => (
