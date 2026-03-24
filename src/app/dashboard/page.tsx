@@ -15,7 +15,8 @@ import {
     X,
     Trash2,
     Eye,
-    Paperclip
+    Paperclip,
+    Download
 } from "lucide-react";
 import Scene from "@/components/three/Scene";
 import { useRouter } from "next/navigation";
@@ -254,11 +255,12 @@ export default function Dashboard() {
                         requests.map((req, i) => (
                             <motion.div
                                 key={req.id}
+                                style={{ zIndex: activeDropdown === req.id ? 40 : 1 }}
                                 initial={{ opacity: 0, x: -20 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ delay: 0.4 + i * 0.1 }}
                                 onClick={() => setSelectedRequest(req)}
-                                className={`glass p-6 rounded-2xl flex items-center hover:bg-foreground/[0.05] transition-all group cursor-pointer min-w-[600px] border border-transparent hover:border-brand-violet/20 ${isDeleting === req.id ? 'opacity-50 grayscale' : ''}`}
+                                className={`relative glass p-6 rounded-2xl flex items-center hover:bg-foreground/[0.05] transition-all group cursor-pointer min-w-[600px] border border-transparent hover:border-brand-violet/20 ${isDeleting === req.id ? 'opacity-50 grayscale' : ''}`}
                             >
                                 <div className="w-1/3">
                                     <div className="font-bold text-sm uppercase tracking-tighter group-hover:text-brand-gray-300 transition-colors">
@@ -321,7 +323,7 @@ export default function Dashboard() {
                                                             setSelectedRequest(req);
                                                             setActiveDropdown(null);
                                                         }}
-                                                        className="w-full text-left p-3 text-[10px] font-bold uppercase tracking-widest flex items-center gap-3 hover:bg-brand-violet text-white transition-colors rounded-lg"
+                                                        className="w-full text-left p-3 text-[10px] font-bold uppercase tracking-widest flex items-center gap-3 hover:bg-brand-violet hover:text-white text-foreground transition-colors rounded-lg"
                                                     >
                                                         <Eye size={14} /> Voir Détails
                                                     </button>
@@ -331,7 +333,7 @@ export default function Dashboard() {
                                                             deleteRequest(req.id);
                                                             setActiveDropdown(null);
                                                         }}
-                                                        className="w-full text-left p-3 text-[10px] font-bold uppercase tracking-widest flex items-center gap-3 hover:bg-red-500 text-white transition-colors rounded-lg mt-1"
+                                                        className="w-full text-left p-3 text-[10px] font-bold uppercase tracking-widest flex items-center gap-3 hover:bg-red-500 hover:text-white text-foreground transition-colors rounded-lg mt-1"
                                                     >
                                                         <Trash2 size={14} /> Supprimer
                                                     </button>
@@ -361,7 +363,7 @@ export default function Dashboard() {
                             initial={{ opacity: 0, scale: 0.9, y: 20 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                            className="relative w-full max-w-2xl glass p-8 md:p-12 rounded-[40px] shadow-2xl border border-brand-violet/20 overflow-hidden"
+                            className="relative w-full max-w-2xl glass p-8 md:p-12 rounded-[40px] shadow-2xl border border-brand-violet/20 overflow-y-auto max-h-[90vh]"
                         >
                             <div className="absolute top-8 right-8">
                                 <button
@@ -409,27 +411,69 @@ export default function Dashboard() {
                                 </div>
                             </div>
 
-                            {selectedRequest.file_urls && selectedRequest.file_urls.length > 0 && (
-                                <div className="space-y-4 mb-10">
-                                    <h4 className="text-[10px] uppercase font-bold text-brand-gray-600 tracking-widest">Documents joints</h4>
-                                    <div className="grid grid-cols-1 gap-2">
-                                        {selectedRequest.file_urls.map((url: string, idx: number) => (
-                                            <a
-                                                key={idx}
-                                                href={url}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="flex items-center gap-3 p-4 bg-stat-card border border-brand-violet/10 rounded-2xl hover:border-brand-violet/30 transition-all group"
-                                            >
-                                                <Paperclip size={14} className="text-brand-violet" />
-                                                <span className="text-xs font-bold uppercase tracking-widest text-brand-gray-300 group-hover:text-white transition-colors">
-                                                    Document joint #{idx + 1}
-                                                </span>
-                                            </a>
-                                        ))}
+                            {(() => {
+                                let urls: string[] = [];
+                                if (Array.isArray(selectedRequest.file_urls)) {
+                                    urls = selectedRequest.file_urls;
+                                } else if (typeof selectedRequest.file_urls === 'string' && selectedRequest.file_urls.trim() !== '') {
+                                    try {
+                                        urls = JSON.parse(selectedRequest.file_urls);
+                                        if (!Array.isArray(urls)) urls = [selectedRequest.file_urls];
+                                    } catch (e) {
+                                        urls = [selectedRequest.file_urls];
+                                    }
+                                }
+                                
+                                if (urls.length === 0) return null;
+
+                                return (
+                                    <div className="space-y-4 mb-10">
+                                        <h4 className="text-[10px] uppercase font-bold text-brand-gray-600 tracking-widest">Documents joints</h4>
+                                        <div className="grid grid-cols-1 gap-2">
+                                            {urls.map((url: string, idx: number) => {
+                                                const isImage = url.match(/\.(jpeg|jpg|gif|png|webp|svg|bmp)(\?.*)?$/i);
+                                                
+                                                return (
+                                                    <div key={idx} className="flex flex-col gap-2 p-4 bg-stat-card border border-brand-violet/10 rounded-2xl transition-all">
+                                                        <div className="flex items-center justify-between">
+                                                            <div className="flex items-center gap-3 overflow-hidden">
+                                                                <Paperclip size={14} className="text-brand-violet shrink-0" />
+                                                                <span className="text-xs font-bold uppercase tracking-widest text-brand-gray-300">
+                                                                    Document joint #{idx + 1}
+                                                                </span>
+                                                            </div>
+                                                            <div className="flex items-center gap-2 shrink-0">
+                                                                <a
+                                                                    href={url}
+                                                                    target="_blank"
+                                                                    rel="noopener noreferrer"
+                                                                    className="p-2 hover:bg-brand-violet/10 text-brand-violet rounded-lg transition-colors flex items-center justify-center"
+                                                                    title="Aperçu"
+                                                                >
+                                                                    <Eye size={14} />
+                                                                </a>
+                                                                <a
+                                                                    href={`${url}?download=true`}
+                                                                    download
+                                                                    className="p-2 hover:bg-brand-violet text-brand-violet hover:text-white rounded-lg transition-colors flex items-center justify-center border border-brand-violet/20 hover:border-transparent"
+                                                                    title="Télécharger"
+                                                                >
+                                                                    <Download size={14} />
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                        {isImage && (
+                                                            <div className="mt-4 rounded-xl overflow-hidden border border-[var(--glass-border)] bg-black/20 flex justify-center p-2">
+                                                                <img src={url} alt={`Document joint #${idx + 1}`} className="max-h-64 object-contain rounded-lg" />
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
                                     </div>
-                                </div>
-                            )}
+                                );
+                            })()}
 
                             <div className="flex justify-between items-center pt-8 border-t border-brand-violet/10">
                                 <div className="flex gap-4">
