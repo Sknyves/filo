@@ -214,8 +214,8 @@ export default function MultiStepForm() {
                                                 onChange={(e) => setFormData({ ...formData, [field.name]: e.target.value })}
                                                 value={formData[field.name] || ""}
                                             >
-                                                <option value="">Sélectionnez un service</option>
-                                                {field.options.map((opt: string) => <option key={opt} value={opt}>{opt}</option>)}
+                                                <option value="" className="bg-background text-foreground">Sélectionnez un service</option>
+                                                {field.options.map((opt: string) => <option key={opt} value={opt} className="bg-background text-foreground">{opt}</option>)}
                                             </select>
                                         ) : field.type === "cards" ? (
                                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
